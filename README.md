@@ -14,4 +14,12 @@ Feature Wishlist :
 	* Flip h/v
 	* Rotate
 2. Extra things :
-	* I'll list them later
+	* Line tool
+	* Circle tool
+	* Rectangle tool
+	* Swap colors
+	* Dither tool
+	* Circle select
+	* Lasso select
+	* Copy
+	* Paste
