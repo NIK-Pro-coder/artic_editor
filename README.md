@@ -6,12 +6,12 @@ Features :
 
 Feature Wishlist :
 1. All the standard tool in tic80 :
-* Pen
-* Bucket
-* Eraser
-* Selection
-* Clear
-* Flip h/v
-* Rotate
+	* Pen
+	* Bucket
+	* Eraser
+	* Selection
+	* Clear
+	* Flip h/v
+	* Rotate
 2. Extra things :
-* I'll list them later
+	* I'll list them later
