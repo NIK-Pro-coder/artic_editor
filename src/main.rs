@@ -24,23 +24,22 @@ fn read_tic(path: &str, size: u32) -> Vec<Chunk> {
     let mut bank = 0u32;
 
     for (_n, i) in buf.iter().enumerate() {
-        println!("{edit}");
+        println!("{i} {edit} {skip}");
         if edit > 3 {
             if skip > 0 {
                 data.push(i.clone());
                 skip -= 1;
                 continue
             } else {
-                edit = -1;
-                data.clear();
+                edit = 0;
                 res.push(Chunk{
                     type_name : type_name.clone(),
                     bank : bank,
                     data : data.clone(),
                 });
+                data.clear();
             }
         }
-        edit += 1;
         type_id = match edit {
             0 => (*i as u32 & 0x00011111) as u32,
             _ => type_id,
@@ -70,15 +69,21 @@ fn read_tic(path: &str, size: u32) -> Vec<Chunk> {
             2 => (*i as u32) << 8,
             _ => 0,
         };
+        edit += 1;
     }
+    res.push(Chunk{
+        type_name : type_name.clone(),
+        bank : bank,
+        data : data.clone(),
+    });
 
     res
 }
 
 fn main() -> () {
-    let file = read_tic("test.tic", 16);
+    let file = read_tic("test.tic", 50);
 
     for (_n, i) in file.iter().enumerate() {
-        println!("{} chunk in bank {}",i.type_name,i.bank);
+        println!("{} chunk in bank {}",i.type_name,i.bank,);
     }
 }
