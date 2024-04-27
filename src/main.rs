@@ -1,4 +1,4 @@
-use std::{fs::File, io::Read};
+use std::{fs::File, io::Read, thread::sleep, time::Duration};
 
 struct Chunk {
     type_name : String,
@@ -23,12 +23,18 @@ fn read_tic(path: &str, size: u32) -> Vec<Chunk> {
     let mut type_id = 0;
     let mut bank = 0u32;
 
+    let mut zero_extended = false;
+
     for (_n, i) in buf.iter().enumerate() {
-        println!("{i} {edit} {skip}");
+        sleep(Duration::from_millis(10));
+        println!("{i} {edit} {skip} {zero_extended}");
         if edit > 3 {
             if skip > 0 {
-                data.push(i.clone());
                 skip -= 1;
+                data.push(i.clone());
+                continue
+            } else if zero_extended && *i == 0 {
+                data.push(i.clone());
                 continue
             } else {
                 edit = 0;
@@ -43,6 +49,10 @@ fn read_tic(path: &str, size: u32) -> Vec<Chunk> {
         type_id = match edit {
             0 => (*i as u32 & 0x00011111) as u32,
             _ => type_id,
+        };
+        zero_extended = match type_id {
+            1 | 2 | 4 => true,
+            _ => false,
         };
         type_name = match type_id {
             1 => "Tiles",
@@ -60,6 +70,9 @@ fn read_tic(path: &str, size: u32) -> Vec<Chunk> {
             19 => "Binary",
             _ => "(Reserved)"
         }.to_string();
+        if edit == 0 {
+            println!("{type_name}");
+        }
         bank = match edit {
             0 => (*i >> 5).into(),
             _ => bank,
@@ -81,7 +94,7 @@ fn read_tic(path: &str, size: u32) -> Vec<Chunk> {
 }
 
 fn main() -> () {
-    let file = read_tic("test.tic", 50);
+    let file = read_tic("test.tic", 9528);
 
     for (_n, i) in file.iter().enumerate() {
         println!("{} chunk in bank {}",i.type_name,i.bank,);
