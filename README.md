@@ -1,6 +1,8 @@
 # ArTic Editor
 ## An external tile/sprite editor for the tic80 fantasy console!
 
+Project status : `Really Early (I can't read a file)`
+
 Features :
 * None for now :(
 
